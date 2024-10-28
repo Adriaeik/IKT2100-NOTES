@@ -179,3 +179,11 @@ client_socket.close()
 Dette er eit enkelt eksempel, men socket-programmering kan utvidast til å lage komplekse nettverksapplikasjonar som webserverar, chat-applikasjonar, og meir.
 
 ## 2.4
+
+
+
+**MAC (Media Access Control)** er ein protokoll på datalinklaget (lag 2 i OSI-modellen) som styrer korleis data blir overført mellom nettverkseiningar på same fysiske nettverk. MAC-adresser, som er unike identifikatorar for nettverksgrensesnitt, spelar ei viktig rolle i å sikre at data vert levert til rett mottakar på det lokale nettverket.
+
+MAC-adresser er på 48 bit og er typisk skrive som seks grupper av to heksadesimale tal (til dømes: `00:1A:2B:3C:4D:5E`). Desse adressene blir tildelt av maskinvareprodusenten og skal vere unike for kvar enkelt nettverksadapter, som for eksempel eit ethernet-kort eller ein Wi-Fi-adapter.
+
+I nettverk som Ethernet, styrer MAC-laget tilgang til den fysiske kommunikasjonskanalen og regulerer dataoverføring gjennom metodar som *CSMA/CD* (Carrier Sense Multiple Access with Collision Detection) for kablede nettverk og *CSMA/CA* (Carrier Sense Multiple Access with Collision Avoidance) for trådløse nettverk.
