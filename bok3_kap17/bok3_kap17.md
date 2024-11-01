@@ -42,3 +42,51 @@ Nokre hovudeigenskapar ved EtherNet/IP inkluderer:
 
 ### 17.7 EtherNet/IP-lagmodell
 EtherNet/IP lagmodellen kombinerer CIP frå sesjonslaget oppover og TCP/IP frå transportlaget. UDP og TCP blir brukt for tidskritisk og ikkje-tidskritisk datakommunikasjon høvesvis, og MAC-teknikk for kollisjonsstyring.
+
+### 17.8 Producer-Consumer Model
+EtherNet/IP er basert på ein producer-consumer modell, der data ikkje er knytt til spesifikke kjelde- eller destinasjonsadresser. Denne modellen gir effektiv slave-til-slave-kommunikasjon, der kvar mottakar filtrerer data grunna kringkasting.
+
+### 17.9 Infrastruktur for EtherNet/IP-applikasjonar
+EtherNet/IP støttar både tidskritisk og ikkje-tidskritisk data og brukar aktiv infrastruktur. Lag 2 og 3 i OSI-modellen blir kobla saman via switchar, som gir VLAN-støtte for å separere tidskritisk og ikkje-tidskritisk trafikk.
+
+### 17.10 Karakterisering av EtherNet/IP-trafikk
+- **Explicit messaging**: Ikkje-tidskritisk trafikk, brukt til konfigurasjon og diagnose. Kan vere både unicast (TCP/IP) og multicast (t.d. ARP, DHCP).
+- **Implicit messaging**: Tidskritisk trafikk, brukt til datautveksling mellom kontroller og I/O-enheiter, typisk i UDP/IP.
+
+### 17.11 Sameksistens av EtherNet/IP med CIP
+CIP (Common Industrial Protocol) er plassert i prosesslaget saman med andre tenester som HTTP, FTP og DNS, og bruker TCP for ikkje-tidskritiske og UDP for tidskritiske meldingar. 
+
+### 17.12 Prioritering av meldingar i EtherNet/IP
+EtherNet/IP nyttar QoS (Quality of Service) for å prioritere tidskritiske data. To QoS-typar er definert: Differentiated Services (Diffserv) og IEEE 802.1Q (VLAN tagging). CIP-rammer med høgare prioritet kan hoppe fram i køen og blir sendt før andre rammer, som vist i figuren.
+
+### Oppsummering av Kapittel 17: Ethernet og Industrielle Applikasjonar
+
+1. **Introduksjon til Ethernet**  
+   Ethernet er ein standardisert LAN-teknologi som vart utvikla på 1970-talet og har blitt svært populær grunna balansen mellom hastigheit, kostnad og installasjonsvennlegheit. Ethernet har gjennomgått fleire generasjonar, inkludert Fast Ethernet, Gigabit Ethernet og 10 Gigabit Ethernet.
+
+2. **Industriell Ethernet**  
+   Industriell Ethernet er utvikla for røffe industrielle miljø og er robust mot påverknadar som høg temperatur, støv og vibrasjon. Denne typen Ethernet har krav til pålitelegheit, nettverkssikkerheit og Quality of Service (QoS) for å støtte sanntidskommunikasjon.
+
+3. **Utvikling av Real-Time Fieldbuses**  
+   Tradisjonell Ethernet og TCP/IP klarar ikkje sanntidskrav for kontrollsystem, så real-time fieldbuses som EtherCAT, EtherNet/IP, og PROFINET IRT vart utvikla for deterministisk kommunikasjon i industrien.
+
+4. **Real-Time Deterministic Fieldbus Realization**  
+   Det finst tre tilnærmingar for real-time determinisme: standard programvare på standard Ethernet, open programvare på standard Ethernet, og standard programvare på modifisert Ethernet.
+
+5. **EtherNet/IP**  
+   EtherNet/IP er ein CIP-basert protokoll utvikla for industriell automasjon som støttar både UDP (for tidskritiske data) og TCP (for ikkje-tidskritiske data). Den nyttar CSMA/CD for å handtere tilgang til felles nettverk.
+
+6. **Producer-Consumer Modell**  
+   EtherNet/IP nyttar ein producer-consumer modell, som tillét effektiv dataoverføring der mottakarane filtrerer data frå kringkasting utan spesifikke adressekrav.
+
+7. **Infrastruktur for EtherNet/IP-applikasjonar**  
+   EtherNet/IP nyttar både aktiv og passiv infrastruktur med VLAN-støtte for å separere tidskritisk og ikkje-tidskritisk trafikk. Dette gir moglegheit for effektiv trafikkstyring i industrielle nettverk.
+
+8. **Trafikkarakterisering i EtherNet/IP**  
+   Trafikken er delt i **explicit messaging** (ikkje-tidskritisk) og **implicit messaging** (tidskritisk), der implicit messaging nyttar UDP/IP for rask datautveksling mellom kontrollerar og I/O-enheiter.
+
+9. **Sameksistens med CIP**  
+   CIP er plassert i prosesslaget saman med andre tenester og bruker UDP og TCP for tidskritiske og ikkje-tidskritiske meldingar, høvesvis.
+
+10. **Prioritering av Meldingar (QoS)**  
+    EtherNet/IP bruker QoS for å prioritere tidskritiske data. Differentiated Services (Diffserv) og IEEE 802.1Q er brukt for å markere høgprioriterte rammer som kan få prioritet i nettverkskøen. 
