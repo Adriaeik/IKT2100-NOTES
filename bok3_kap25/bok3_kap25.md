@@ -561,3 +561,55 @@ HART har vore i bruk i omtrent 25 år, medan WHART er om lag eit tiår gamal. In
 **Integrasjonseigenskapar**:
 - **Bakoverkompatibilitet**: WHART-einingar er kompatible med eksisterande HART-einingar, noko som gjer overgang lettare.
 - **Gateway for protokollkonvertering**: Integrasjonen skjer gjennom ein gateway som omformar protokollane for begge teknologiane, slik at WHART og HART kan operere i same system.
+
+### Oppsummering av Kapittel 25: WirelessHART i Industriell Kommunikasjon
+
+Kapittel 25 gir ein grundig gjennomgang av **WirelessHART (WHART)** som ein viktig trådløs standard for industriell prosesskontroll og automatisering. Her blir hovudfunksjonar, sikkerheitstiltak, og nettverksdanning i WHART-nettverk presentert, saman med samanlikningar med den eldre HART-protokollen.
+
+#### Hovudpunkt:
+1. **WirelessHART Arkitektur og Protokoll**: WHART byggjer på IEEE 802.15.4-2006 med støtte for mesh-nettverk, kanalhopping, og TDMA for stabil og sikker kommunikasjon. Protokollen er utvikla for å møte krevjande industriell bruk og sikre robust datalevering utan interferens eller datatap.
+
+2. **Nettverksdanning**: Nettverksstyraren administrerer prosessen med å sette opp nettverks-ID, distribuere join-nøklar og konfigurere einingane. Når eininga blir med i nettverket, blir den utstyrt med unike sesjonsnøklar og rutingsinformasjon som legg til rette for sikker og effektiv kommunikasjon.
+
+3. **Sikkerheitsmekanismar**: Kapittelet legg stor vekt på sikkerheit gjennom bruk av AES-128 symmetrisk kryptering. Nøkkeltypar som join key, session key, network key og handheld key blir brukt for å autentisere einingane, sikre ende-til-ende kommunikasjon, og beskytte data mot manipulasjon og andre sikkerheitstruslar.
+
+4. **Sikkerheitstruslar og Tiltak**: WHART står overfor utfordringar som interferens, jamming, spoofing og desynkronisering. Protokollen bruker teknikkar som kanalhopping, frekvensdiversitet, og redundans for å motverke desse truslane og sikre kontinuerleg og stabil drift.
+
+5. **Redundans i Nettverket**: For å auke systempålitelegheit bruker WHART redundans på fleire nivå, inkludert tilgangspunkt, gateway, og nettverksstyrar, samt fleire ruter mellom einingar i det trådlause sensornettverket.
+
+6. **Samanlikning og Integrasjon med HART**: WHART byggjer på den eldre HART-protokollen og er bakoverkompatibel, noko som legg til rette for enkel integrasjon i eksisterande industrielle system ved hjelp av ein gateway som omformar protokollane. WHART er meir sikker og fleksibel enn HART, og støttar fleire moderne funksjonar som ende-til-ende sikkerheit og avansert ruteadministrasjon.
+
+### Konklusjon
+WirelessHART representerer ein stor utvikling innan trådløs kommunikasjon for industriell automatisering, og kapittel 25 forklarer korleis WHART sin struktur, sikkerheit og fleksibilitet gjer den til ein foretrukken standard for moderne prosesskontroll. Kapittelet viser også til korleis integrasjon med eldre HART-nettverk kan utførast for å modernisere industrielle system utan å gå på kompromiss med påliteligheit og sikkerheit.
+
+### WirelessHART Kapittel 25: Q&A
+
+#### 1. **Kva er WirelessHART (WHART), og kvifor er det viktig i industriell kommunikasjon?**
+   - WirelessHART er ein trådløs standard for industriell automasjon og prosesskontroll. Den sikrar pålitelig og sikker kommunikasjon gjennom mesh-nettverk, kanalhopping, og tidssynkronisering (TDMA), som reduserer interferens og støttar robust datalevering.
+
+#### 2. **Kva rolle speler nettverksstyraren i WHART-nettverket?**
+   - Nettverksstyraren administrerer oppsett av nettverket, som å distribuere join-nøklar, opprette tidsplanar for kommunikasjon, og konfigurere einingane slik at dei kan kommunisere effektivt og sikkert.
+
+#### 3. **Kva sikkerheitstiltak brukar WHART for å beskytte data?**
+   - WHART bruker AES-128 kryptering, kanalhopping, og fleire nøkkeltypar som join key, session key og network key for å beskytte data mot avlytting, manipulering og andre truslar.
+
+#### 4. **Korleis bidreg kanalhopping til WHART sin sikkerheit?**
+   - Kanalhopping gjer at WHART automatisk byter frekvens mellom fleire kanalar, noko som reduserer risikoen for interferens frå andre trådlause nettverk og gjer kommunikasjonen meir pålitelig.
+
+#### 5. **Kva er forskjellen mellom HART og WHART?**
+   - HART er ein eldre, kablet protokoll utan innebygd sikkerheit, medan WHART er ein sikker trådløs versjon basert på HART 7-standarden med støtte for trådløs ruting, ende-til-ende sikkerheit, og TDMA på data-link-nivået.
+
+#### 6. **Korleis fungerer nøkkelhandtering i WHART?**
+   - Sikkerheitsstyraren genererer og lagrar nøklar, medan nettverksstyraren distribuerer dei til einingane. Nøkkelhandteringa omfattar join keys for tilkopling, session keys for individuell kommunikasjon, og network key for autentisering på data-link-laget.
+
+#### 7. **Kva sikkerheitstruslar kan påverke WHART-nettverk, og korleis blir desse handtert?**
+   - WHART står overfor truslar som interferens, jamming, spoofing, og Sybil-angrep. For å beskytte nettverket bruker WHART teknikkar som kanalhopping, redundans, MIC (Message Integrity Code) for dataintegritet, og sikre tidsplanar.
+
+#### 8. **Kva er føremonane med redundans i WHART?**
+   - Redundans aukar nettverkspålitelegheit ved å sikre alternative ruter for dataoverføring, inkludert fleire tilgangspunkt, gatewayar, og nettverksstyrarar som kan overta ved feil.
+
+#### 9. **Korleis blir HART og WHART integrert i eksisterande industrielle system?**
+   - Integrasjon skjer ved hjelp av ein gateway som fungerer som protokollomformar. WHART er bakoverkompatibel med HART, noko som gjer det lettare å modernisere industrielle anlegg som alt nyttar HART.
+
+#### 10. **Kvifor er AES-128 ein viktig del av WHART si sikkerheit?**
+   - AES-128 gir høg grad av sikkerheit gjennom sterk symmetrisk kryptering, som sikrar at berre autoriserte einingar kan lese og sende data. AES-128 sikrar også integriteten av meldingar gjennom MIC, noko som beskyttar mot manipulering og replay-angrep.
