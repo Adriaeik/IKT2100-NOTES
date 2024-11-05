@@ -149,3 +149,173 @@ Nettverkslaget i WirelessHART har fleire viktige funksjonar for å sikre effekti
 - **Message Integrity Code (MIC)**: Sikrar dataens integritet ved å verifisere at dataen ikkje har blitt endra under transport.
 
 Nettverkslaget i WirelessHART kombinerer desse ruting- og sikkerheitsmekanismane for å sikre ein robust, skalerbar og sikker kommunikasjon, noko som er avgjerande i industrielle prosesskontrollmiljø.
+
+### 25.4.4 Transportlag i WirelessHART
+
+Transportlaget i WirelessHART sikrar ende-til-ende levering av pakkar i kommunikasjonar som krev kvittering, slik som forespurnad-svar-trafikk.
+
+**Hovudfunksjonar**:
+- **Segmentering og samanstilling**: Data blir automatisk segmentert ved kjelda og sett saman igjen ved destinasjonen.
+- **Kryptering**: Brukar enten **Join Key** eller ein av sesjonsnøklane for å kryptere transportlagets PDU (TPDU), noko som sikrar pålitelig kommunikasjon.
+- **Identiske nøklar**: Einingar som kommuniserer må ha identiske join keys for å kunne dekryptere dataen.
+- **Innkapsling**: Transportlaget innkapslar applikasjonslag-dataen og fungerer som eit konvergenspunkt mellom HART og WirelessHART.
+
+### 25.4.5 Applikasjonslaget i WirelessHART
+
+Applikasjonslaget i WirelessHART brukar standard HART-kommandobasert struktur og ligg på øvste nivå i protokollstakken.
+
+**Typar kommandoar**:
+1. **Universal Commands**: Støttast av alle WHART-einingar.
+2. **Common Practice Commands**: Frivillige kommandoar som gjeld for mange ulike typar einingar.
+3. **Device Family Commands**: Produsentspesifikke kommandoar, valfrie etter behov i felteiningar.
+4. **Wireless Commands**: Støtte for WHART-spesifikke einingar, nødvendige for nettverksdrift.
+
+**Funksjonar i applikasjonslaget**:
+- Ansvarleg for å tolke meldingane, identifisere kommandonummer, utføre spesifikke kommandoar, og generere svar.
+- Nettverksstyraren brukar applikasjonslagskommandoar for å konfigurere og administrere heile WHART-nettverket.
+
+Applikasjonslaget er derfor kritisk for riktig drift og kommunikasjon i WirelessHART-nettverket, og støttar både generelle og spesifikke kommandoar for ulike einingar.
+
+### 25.5.1 Nettverksstyrar i WirelessHART
+
+Nettverksstyraren er hovudkontrollsenteret for WirelessHART-nettverket, men er ikkje ein fysisk eining – det er ein programvare som fungerer som mottakar og distributør av HART-kommandoar.
+
+**Hovudfunksjonar**:
+- **Organisering og overvåking**: Nettverksstyraren organiserer, overvåkar og opprettar strukturen i HART-nettverket.
+- **Kommunikasjonsplanlegging**: Planlegg kommunikasjon mellom einingar og handterer både dedikerte og delte ressursar.
+- **Rutingadministrasjon**: Ansvarleg for ruting i nettverket og for å sikre stabil kommunikasjon.
+- **Nettverksstatus**: Rapporterer nettverkshelsa til vertsapplikasjonen og administrerer når einingar blir med i eller forlèt nettverket.
+
+**Ytelsesmål**:
+Ytinga til nettverksstyraren kan vurderast ut frå faktorar som:
+- Maksimalt antal einingar som kan koplast til nettverket,
+- Tida det tek å initialisere nettverket,
+- Tida det tek for ei eining å bli med i nettverket,
+- Samt total gjennomstrøyming i systemet.
+
+### 25.5.2 Sikkerheitsstyrar i WirelessHART
+
+Sikkerheitsstyraren arbeider tett saman med nettverksstyraren for å sikre at berre autoriserte einingar får tilgang til nettverket, og for å gi autorisasjons- og krypteringsnøklar for å sikre trygg kommunikasjon.
+
+**Viktige eigenskapar**:
+- **Enkel sikkerheitsstyrar per nettverk**: Det er berre éin aktiv sikkerheitsstyrar per WHART-nettverk.
+- **Støtte for fleire nettverk**: Sikkerheitsstyraren kan tene fleire nettverk samtidig.
+- **Klient-server-forhold**: Arbeidar i eit klient-server-forhold med nettverksstyraren.
+- **Grensesnitt**: Grensesnittet mellom sikkerheitsstyraren og nettverksstyraren er ikkje definert i WHART-standarden, noko som gir fleksibilitet i implementeringa.
+
+Sikkerheitsstyraren har hovudansvaret for å oppretthalde sikkerheita i nettverket gjennom nøkkelstyring og overvåking av nettverkssikkerheita.
+
+### 25.5.3 Gateway i WirelessHART
+
+Ein **gateway** i WirelessHART-nettverket fungerer som eit kommunikasjonsledd mellom vertsapplikasjonar og felteiningar. Den kan sjåast som ein trådløs versjon av marshaling-panel og koplingsboksar, og har både ein virtuell gateway-funksjon og eitt eller fleire tilgangspunkt. Det er éin gateway per nettverk.
+
+**Hovudfunksjonar**:
+- **Bufring og protokollkonvertering**: Ansvarleg for å lagre data midlertidig og for å konvertere mellom ulike protokollar, slik at vertsapplikasjonar kan kommunisere med felteiningane.
+- **Klokkesynkronisering**: Gatewayen fungerer som tidskjelde for nettverket.
+
+**Nødvendige eigenskapar**:
+- **Nettverks- og sikkerheitsstyring**: Gatewayen må støtte funksjonar for å administrere nettverket og sikkerheita.
+- **Fleire utgangsprotokollar**: Skal støtte fleire protokollar for integrasjon med ulike vertsapplikasjonar som DCS, PLC, og datahistorikk-system.
+- **Fleire tilkoplingar**: Gatewayen opptrer som ein server og kan sende data til fleire sluttbrukarar samtidig.
+- **Interoperabilitet**: Må vere kompatibel med ulike system.
+- **Sikker overføring**: Støtte sikker protokolloverføring over Ethernet gjennom sterk kryptering.
+- **Tilgangsnivå**: Bør ha ulike sikkerheitstilgangar for ulike brukarar.
+
+### 25.5.4 Adapter i WirelessHART
+
+Ein **adapter** gjer det mogleg å integrere eksisterande HART-felteiningar i eit WirelessHART-nettverk. Adapteren gir ein parallell kommunikasjonskanal til den eksisterande 4-20 mA strømsløyfa utan å forstyrre det vanlege signalet.
+
+**Viktige eigenskapar**:
+- **HART-merke**: Adapteren må ha ein HART-tag (identifikator).
+- **Uforstyrra signal**: Må ikkje påverke det normale 4-20 mA signalet.
+
+Adapteren gir altså ein trådløs kommunikasjonskanal til eksisterande HART-einingar og gjer dei tilgjengelege i WirelessHART-nettverket.
+
+### 25.6 Latens og Jitter i WirelessHART
+
+**Latens** er den tidsforsinkelsen det tek for måledata å nå kontrollaren, medan **jitter** refererer til variasjonar i denne forsinkelsen. Latens og jitter kan påverke prosesskontrollen dersom dei er for høge. 
+
+WirelessHART er ein **tidsynkronisert kontrollprotokoll**, noko som ikkje er tilgjengeleg i mange andre protokollar. Denne tidsynkroniseringa gjer at målingar kan planleggjast presist, noko som nesten eliminerer både latens og jitter.
+
+- **Hastigheit samanlikna med andre system**: WirelessHART har ei overføringsrate på **250 Kbits/s**, medan FOUNDATION Fieldbus opererer med 31.25 Kbits/s. Dette gir WirelessHART ein kommunikasjonstid på **4 µs per bit**, mot 32 µs per bit for FOUNDATION Fieldbus.
+- **Tidsluke og meldingsoverføring**: Ein typisk tidsluke på 10 ms er nok til å sende og motta ei kvittering for ei melding. Ein WHART-melding på 128 byte krev berre 4 ms for å nå destinasjonen, noko som reduserer latens til eit minimum.
+- **Optimert nettverk**: Latens kan reduserast ytterlegare ved hjelp av effektiv tidsplanlegging, kanal-blokkering, kanalhopping, og velplasserte tilgangspunkt. Dette sikrar at latens alltid er mykje mindre enn respons-tidene til dei fleste fysiske prosessar, slik at det ikkje påverkar praktisk prosesskontroll.
+
+### 25.7 Sameksistens-teknikkar
+
+WirelessHART opererer i det lisensfrie ISM-bandet, som også blir brukt av andre trådlause system som Bluetooth, Wi-Fi og ZigBee. For å unngå forstyrringar frå slike system og sikre pålitelig kommunikasjon mellom trådlause felteiningar og kablede system, har WirelessHART implementert ulike **sameksistens-teknikkar**.
+
+### 25.7.1 Kanalhopping i WirelessHART
+
+WirelessHART-nettverk utnyttar kanalhopping som ein metode for å redusere forstyrringar frå andre trådlause system, som Bluetooth, Wi-Fi og ZigBee.
+
+- **Kanalutval**: WirelessHART bruker 15 kanalar i ISM-bandet og ein **pseudo-random kanalhoppingssekvens** for å sikre at ein bestemt kanal ikkje blir brukt over lang tid, noko som reduserer risikoen for vedvarande forstyrringar.
+- **Slotted Hopping**: WirelessHART bruker slotted hopping, der kanalbruken varierer etter mønster og er avhengig av faktorar som kanaloffset, ASN (Absolute Slot Number) og talet på aktive kanalar. Dette bidrar til å fordele signalbruken og minimere RF-forstyrringar.
+
+### 25.7.2 Direct Sequence Spread Spectrum (DSSS)
+
+WirelessHART bruker DSSS for å forbetre signal-til-støy-forholdet og auke mottakarens sensitivitet.
+
+- **Spreiing av signalet**: DSSS sprer signalet over heile frekvensbanda tildelt til WirelessHART, noko som gjer det lettare for nettverket å oppdage signalet midt i støy.
+- **Kodebasert dekoding**: WHART-einingar kan dekode den kodede informasjonen i signalet, medan andre system berre oppfattar det som kvit støy. Dette sikrar at berre WHART-einingar kan tolke signalet riktig, sjølv når fleire radiosignal overlappar kvarandre. 
+
+Desse teknikkane gjer WirelessHART meir motstandsdyktig mot interferens og sikrar pålitelig datakommunikasjon i industrielle miljø.
+
+### 25.7.3 Lavstyrkesending i WirelessHART
+
+WirelessHART-enheter bruker lågeffektsending samanlikna med andre trådlause system som RFID-lesarar og Bluetooth. Dette reduserer sjansen for interferens frå slike system. 
+
+- **IEEE 802.15.4-standarden**: WHART nyttar denne standarden for lågeffektsending, som kan rekke opptil 200 meter med forsterkarar. For kortare avstandar brukar enkle lågstrømsforsterkarar som sender signal frå ein enhet til den neste, og minimerer slik RF-forureining i spekteret.
+
+### 25.7.4 Blacklisting og Kanalevaluering
+
+WirelessHART kan bli konfigurert til å unngå ofte brukte kanalar, noko som reduserer sannsynet for interferens. Før sending sjekkar WHART-eininga om kanalen er fri. Om det blir oppdaga annan aktivitet, ventar eininga og prøver igjen på eit anna tidspunkt og ein annan kanal.
+
+### 25.7.5 Spatial Diversity
+
+Spatial diversity handlar om strategisk plassering av trådlause einingar for å minimere sameksistensproblemer med nærliggande trådlause einingar.
+
+- **Antenne-diversitet**: Mottakaren vel det beste signalet frå fleire antenner, noko som reduserer interferens.
+- **Retningsantenner**: Sender signal i ein spesifikk retning for å redusere RF-forstyrringar.
+
+### 25.8 Tidsynkronisert Mesh-protokoll (TSMP) i WirelessHART
+
+Tidsynkronisering er essensielt i WirelessHART for å sikre presis kommunikasjon. Protokollen baserer seg på **TDMA (Time Division Multiple Access)** og kanalhopping for å gi både effektiv kommunikasjon og auka sikkerheit.
+
+- **Kommunikasjonsplanlegging**: Strukturen for kommunikasjon skjer gjennom grafbaserte ruter som definerer stiar mellom einingar (hops) i nettverket. Alle einingar følgjer ein **ASN (Absolute Slot Number)**, som gir dei riktig timing for tidsluka dei skal kommunisere i. Gatewayen fungerer som hovudklokka for å synkronisere heile nettverket.
+- **Tidsstempel**: Kvar felt-enhet får eit tidsstempel med nøyaktigheit på 1 ms over heile nettverket, noko som gir svært presis tidsstyring som ikkje er tilgjengeleg i mange andre protokollar.
+
+### 25.9 Sikkerheit i WirelessHART
+
+WirelessHART er ein IEC-godkjent standard som gir trygg og pålitelig meldingsoverføring i prosesskontroll og automasjonsmiljø. Nettverket er bygd opp som eit mesh-nettverk der kvar felteining kan ha éin eller fleire sensorar som samlar inn prosessdata og sender desse vidare til andre felt-einingar.
+
+- **Sikker overføring av informasjon**: Ruteinformasjon, sikkerheitsnøklar, og tidsinformasjon blir trygt overført mellom einingar. Data beveger seg gjennom WirelessHART-nettverket som kommandoar, og protokollen sikrar at desse kommandoane er **konfidensielle, integrerte, og autentiske**.
+
+### 25.9.1 OSI-lagsbasert sikkerheit i HART og WirelessHART
+
+WirelessHART bruker ulike sikkerheitstiltak på OSI-modellen sine lag:
+- **Nettverkslaget og nedover**: I WirelessHART er data kryptert og sikra frå nettverkslaget og nedover.
+- **Applikasjons- og transportlag**: Desse laga får ikkje krypteringsdekning, i motsetning til dei lågare laga, som sørger for sikkerheitsfunksjonane som WirelessHART tilbyr på den trådlause delen av nettverket.
+
+### 25.9.2 Ende-til-ende-sikkerheit i WirelessHART
+
+Ende-til-ende-sikkerheit sikrar at data som reiser frå ein kjelde- til ein destinasjonseining er verna gjennom heile overføringa. Denne sikkerheita blir håndtert av nettverkslaget.
+
+- **Sesjonsoppretting**: Ei felteining kan ikkje opprette ein direkte sesjon med ei anna felteining. I staden må data reise via ein gateway. Ein sesjon kan opprettast mellom ei felteining og ein gateway eller mellom ei felteining og nettverksstyraren.
+- **Kryptering og dekryptering**: Data frå kjeldeeininga blir først kryptert med ein unik symmetrisk sesjonsnøkkel, sendt til gatewayen, der gatewayen dekrypterer dataen og krypterer det igjen med sesjonsnøkkelen til destinasjonseininga før det sendast vidare.
+
+### 25.9.3 Network Layer PDU (NPDU) i WirelessHART
+
+NPDU på nettverkslaget inneheld fleire felt som støttar sikkerheita, inkludert sikkerheitskontroll, ein teller og ein **Message Integrity Code (MIC)**.
+
+- **Kryptering**: NPDU-nyttelasta (transportlagets PDU) blir kryptert ved hjelp av AES med ein 128-bits nøkkel.
+- **Konfidensialitet, integritet og autentisering**: Nettverkslaget gir ende-til-ende konfidensialitet og sikrar dataintegritet og autentisering.
+
+#### 25.9.3.1 Security Control Byte (SCB)
+- SCB definerer typen sikkerheit som vert brukt. Den øvre delen av byte-verdien er reservert for framtidige behov, medan den nedre delen spesifiserer sikkerheitstypen (som sesjonsnøkkel, join-nøkkel, eller handhaldne nøkkel).
+
+#### 25.9.3.2 Message Integrity Code (MIC)
+- **MIC** sikrar autentisitet og integritet for datakjelda. MIC bereknast frå fire byte-strengar: NPDU header, NPDU nyttelast, AES-nøkkel, og ein **nonce**. 
+- **Nonce**: Ein 13-byte verdi som forsvarar mot reply-attacks. Første byte er enten sett til einar (for join-respons meldingar) eller nullar, dei neste 4 bytene utgjer ein teller, og dei siste 8 bytene inneheld kjeldeadressa.
+
+Denne strukturen gir ein sikker og robust dataintegritet for overføringar i WirelessHART-nettverket, og sikrar at data ikkje vert endra eller manipulert undervegs.
