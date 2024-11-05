@@ -283,3 +283,34 @@ Industrielle system som er spreidde over store område, som fjernstyrte anlegg, 
 
 ### Avsluttande Merknad
 For å sikre desse nettverka er det kritisk å forstå systemfunksjonaliteten i industrielle kontrollsystem og å følgje grunnleggande prinsipp for sikker nettverksdesign. Vidare studier av industrielle nettverksprotokollar vil støtte integrerte nettverk med høg sikkerheit og robustheit.
+
+#### Spørsmål og Svar
+1. **Kva er hovudutfordringane med vidstrakt nettverkstilkobling i industrielle system?**
+   - Vidstrakt nettverkstilkobling (WAN) bind saman kontrollrom og fjerntliggjande industriområde gjennom teknologiar som satellitt, mikrobølgje og fiberoptikk. Utfordringane omfattar fysisk tilgjenge for ukjende brukarar og risiko for manipulasjon gjennom teknikkar som GPS-spoofing.
+
+2. **Korleis påverkar GPS-spoofing industrielle system?**
+   - GPS-spoofing kan manipulere tidssensitive system som synkrofaserar i smartnett og føre til avvik i tidsdata, som igjen kan påverke stabiliteten i straumnettet eller andre prosesskontrollsystem.
+
+3. **Kva er smartnett, og kvifor treng det spesielle sikkerheitsvurderingar?**
+   - Smartnett er eit omfattande system som integrerer avansert måleteknologi og kommunikasjon for styring og distribusjon av energi. På grunn av sitt store omfang og mange tilkoblingar representerer det eit stort angrepsflate, som krev ekstra sikkerheitskontrollar.
+
+4. **Kva er Advanced Metering Infrastructure (AMI), og kva for sikkerheitsutfordringar kjem med det?**
+   - AMI består av smarte målarar, kommunikasjon, og eit hovudsystem for å samle og administrere måledata. Utfordringar inkluderer risiko for utnytting av smarte målarar som har prosessorar og kan manipulere data.
+
+5. **Korleis kan sikkerheit sikrast i eit vidstrekt smartnett?**
+   - Sikkerheit i smartnett kan styrkast ved segmentering av nettverket og kontroll av tilgangen mellom ulike nodar. Det er òg viktig å sikre både fysisk tilkomst og å implementere avanserte deteksjonssystem for å overvake uvanleg aktivitet.
+
+6. **Kva er hovudkomponentane i eit smartnett?**
+   - Eit smartnett består av smarte målarar, kommunikasjonsnettverk, og eit administrasjonssystem. Desse komponentane samhandlar med mange andre system, som energistyringssystem og ICS-serverar, noko som krev avansert sikkerheitsstyring.
+
+7. **Kva er "prinsippet om minst mogleg rute," og kvifor er det viktig i industriell nettverksdesign?**
+   - Prinsippet om minst mogleg rute handlar om å gje eit system tilgang berre til dei nettverksressursane som er nødvendige for funksjonen det skal utføre. Dette minskar risikoen for uønskt tilgang og styrkjer det overordna sikkerheitsnivået.
+
+8. **Kvifor kan AMI vere meir sårbar samanlikna med andre industrielle nettverk?**
+   - AMI er svært tilgjengeleg, og dei store kostnadane knytt til produksjon og distribusjon av smarte målarar kan føre til sårbarheiter. Sidan målarane opererer i eit så stort omfang, er det ein betydelig risiko for feil og angrep som kan påverke store delar av infrastrukturen.
+
+9. **Kva rolle speler distribuerte system som synkrofaserar i smartnett?**
+   - Synkrofaserar overvakar spenning og straum på tvers av eit stort område og sikrar synkronisert drift i energinettet. Dei er avhengige av GPS-timing, og GPS-spoofing kan føre til feil i synkroniseringa, noko som kan påverke stabiliteten til nettet.
+
+10. **Kva sikkerheitstiltak kan redusere risikoen for utnytting av vidstrakte nettverkstilkoblingar?**
+    - Tiltak inkluderer å sikre fysiske tilkoplingspunkt, implementere kryptering og autentisering, og å bruke avanserte deteksjonssystem som kan overvake og reagere på uvanleg aktivitet i systemet.
