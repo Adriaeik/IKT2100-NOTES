@@ -319,3 +319,245 @@ NPDU på nettverkslaget inneheld fleire felt som støttar sikkerheita, inkludert
 - **Nonce**: Ein 13-byte verdi som forsvarar mot reply-attacks. Første byte er enten sett til einar (for join-respons meldingar) eller nullar, dei neste 4 bytene utgjer ein teller, og dei siste 8 bytene inneheld kjeldeadressa.
 
 Denne strukturen gir ein sikker og robust dataintegritet for overføringar i WirelessHART-nettverket, og sikrar at data ikkje vert endra eller manipulert undervegs.
+
+### 25.10 Sikkerheitstruslar i WirelessHART
+
+WirelessHART er utsett for fleire potensielle sikkerheitstruslar, både i det trådlause og kablede nettverket, ettersom det deler ISM-banda med andre trådlause system som Wi-Fi, Bluetooth og ZigBee. Dette kan føre til informasjonssikkerheitsproblem som lekkasje av data, trafikkavbrot, eller manipulering av informasjon.
+
+#### 25.10.1 Interferens
+Interferens oppstår når eit uønska signal, som kan ha same frekvens og modulasjon som WirelessHART-signalet, forstyrrar kommunikasjonen.
+
+- **Potensielle interferenskjelder**: Andre system i nærleiken, som Bluetooth, ZigBee og Wi-Fi, kan skape interferens.
+- **Tiltak**: WirelessHART bruker teknikkar som **Frequency Hopping Spread Spectrum (FHSS)**, tidsdiversitet og stiadiversitet for å redusere interferens.
+
+#### 25.10.2 Jamming
+Jamming inneber ein bevisst forstyrrelse av nettverkssignalet gjennom eit støyende signal med same frekvens og modulasjon som WirelessHART.
+
+- **Effektar av jamming**: Kan vere øydeleggjande for nettverksprestanda, avhengig av angriparen si evne til å injisere forstyrrande signal.
+- **Tiltak**: WirelessHART nyttar FHSS og kanalblokkering for å blokkere støyande kanalar, men manuell blokkering reduserer talet på tilgjengelege kanalar for WirelessHART-signal.
+
+#### 25.10.3 Sybil-angrep
+Eit Sybil-angrep skjer når ein angripar introduserer fleire identitetar (noder eller programvare) i systemet for å svekke nettverkets funksjonalitet.
+
+- **Tiltak**: Kvar eining i WirelessHART har ein global unik ID, som kombinerer eningstype og enings-ID. Gatewayen vedlikeheld desse unike ID-ane, medan nettverksstyraren tildeler individuelle kallenamn til kvar eining. Desse unike ID-ane og kallenamna sikrar at einingane kan opprette trygge sesjonar med gatewayen og nettverksstyraren, noko som reduserer risikoen for Sybil-angrep. 
+
+Desse tiltaka gir WirelessHART eit robust sikkerheitsnivå for å handtere interferens og potensielle angrep i komplekse industrielle miljø.
+
+### 25.10.4 Kollisjon
+
+Kollisjon skjer når fleire einingar prøver å få tilgang til same kanal samtidig. Dette kan vere tilsikta eller utilsikta, og WirelessHART reduserer risikoen for slike kollisjonar gjennom **kanalhopping** og **tidsdiversitet**.
+
+- **Oppdaging**: Kollisjonar blir oppdaga ved hjelp av **CRC (Cyclic Redundancy Check)**.
+- **Tiltak**: Fysisk lag og datalinklag samarbeider for å koordinere tilgang, noko som reduserer kollisjonar.
+
+### 25.10.5 Manipulering
+
+Dersom ein inntrengar har tilgang til nettverksnøkkelen og ein ukryptert DLPDU, kan vedkomande manipulere meldinga og lage ein ny **Message Integrity Code (MIC)** for å få meldinga til å sjå autentisk ut. 
+
+- **Konsekvensar**: Manipulerte pakkar kan omdirigerast til feil destinasjon eller sendast tilbake til kjelda, noko som kan svekke nettverksytelsen.
+
+### 25.10.6 Spoofing
+
+Ved spoofing prøver ein angripar å etterlikne ei ny eining som ønskjer å bli med i nettverket.
+
+- **Metode**: Ein angripar sender ei falsk annonsemelding som om det var frå ei ny eining. Når einingane prøver å bli med, kan angriparen avvise deira tilkobling, eller forhindre dei frå å delta i nettverket.
+- **Konsekvensar**: Om angriparen har tilgang til nettverksnøkkelen, kan dette føre til meir skadelege angrep, inkludert blokkering av nettverkstrafikk.
+
+### 25.10.7 Uttømming (Exhaustion)
+
+Eit uttømmingsangrep skjer når ein angripar bruker ei eining til å sende ei rekke meldingar til andre einingar i nettverket, noko som belastar ressursane kraftig.
+
+- **Metode**: Ved å ha tilgang til nettverksparametre og vere i stand til å berekne MIC for DLPDU, kan angriparen floode nettverket med falske join-førespurnadar.
+- **Konsekvensar**: Desse førespurnadane blir til slutt avvist av nettverksstyraren, men dei fører til ressursforbruk og kan føre til alvorleg overbelastning av nettverket.
+
+Desse truslane krev ulike sikkerheitstiltak for å oppretthalde robust og stabil nettverkskommunikasjon i WirelessHART-miljø.
+
+### 25.10.8 Denial of Service (DoS)
+
+DoS-angrep kan lamme nettverket ved å overvelde det med falske førespurnader eller forstyrringar. Metodar for DoS i WirelessHART inkluderer:
+- **Falske tidsannonseringar**: Forstyrrar nettverkssynkronisering.
+- **Flom med falske join-forespurningar**: Overbelastar nettverksstyraren.
+- **Jamming av signalet**: Hindrar kommunikasjon.
+- **Erstatting av ukryptert DLPDU og rekalkulering av CRC**: Forstyrrar dataintegriteten.
+  
+**Tiltak**: MIC-verifisering ved hjelp av AES i CCM-modus kan identifisere manipulerte pakkar, men denne verifiseringa krev tid og kan føre til avvising av ugyldige pakkar.
+
+### 25.10.9 Trafikkanalyse
+
+I trafikkanalyse utnyttar ein angripar at NPDU- og DLPDU-headerfelt er ukrypterte. Dette inkluderer:
+- **NPDU-felt**: Kilde- og destinasjonsadresse, sikkerheitsbyte, ANS-utdrag og nonce-teller.
+- **DLPDU-felt**: Adressespesifikator og DLPDU-spesifikator.
+  
+Ved å analysere desse dataene kan ein angripar identifisere bruksratar, perioder med høg aktivitet, og join-forespurningar, noko som kan utnyttast til meir målretta angrep.
+
+### 25.10.10 Wormhole-angrep
+
+Eit wormhole-angrep oppstår når ein angripar etablerer ein tunnel mellom to gyldige einingar, ved å koble dei via ein sterkare kablet eller trådløs link.
+
+- **Utføring**: Ein HART-eining tilkopla WHART via adapterar kan bruke vedlikehaldsportar til å etablere tunnelen.
+- **Sårbarhet**: Graph Routing kan vere utsett for wormhole-angrep sidan det nyttar redundante stiar.
+- **Forsvar**: Source Routing, som følgjer ei rute frå eining til eining, kan motstå wormhole-angrep, men er mindre pålitelig da feilar i mellomliggende lenker kan føre til at pakkar ikkje når destinasjonen.
+
+**Pakkelekkasje** er ein teknikk som blir brukt for å avverge wormhole-angrep.
+
+### 25.10.11 Selektiv videresending-angrep
+
+Selektiv videresending skjer når ei kompromittert node (ofte frå eit Sybil-angrep) bevisst slepp nokre pakkar i staden for å sende alle vidare. 
+
+- **Black Hole**: Når ingen pakkar blir sendt vidare, skapar det ein "black hole".
+- **Selektiv Dropping**: Angriparen slepp berre utvalde pakkar, slik at det ser ut som ein normal drift og ikkje triggar gjenopprettingsmekanismar.
+
+### 25.10.12 Desynkronisering
+
+WirelessHART-nettverket er avhengig av presis tidssynkronisering med ein tidsintervall på 10 ms. Dette blir administrert av **MAC-sub-laget**. Når ein node mottar ei ACK-melding, justerer den klokka si etter denne. 
+
+- **Angrepsmetode**: Om ein kompromittert sender manipulerer tidsdataen, kan det føre til tidsskeivning mellom nodar, noko som resulterer i bortkasta ressursar når nodane prøver å synkronisere seg.
+
+### 25.11 Redundans i WirelessHART
+
+Redundans er viktig i prosesskontrollsystem for å sikre kontinuerleg datatilgang, spesielt der data er kritisk for operasjonen. WirelessHART har redundans på følgande nivå:
+
+- **Trådlause sensornettverk (WSN)**
+- **Tilgangspunkt i nettverket**
+- **Gateway, nettverksstyrar og sikkerheitsstyrar**
+
+#### 25.11.1 Redundans i Trådlause Sensornettverk (WSN)
+
+Redundans i WSN kan oppnåast på fleire måtar:
+
+- **Romleg diversitet**: Bruker fleire stiar mellom nettverkskomponentar.
+- **Frekvensdiversitet**: Utnyttar kanalhopping for å unngå forstyrringar.
+- **Tidsdiversitet**: Tilgang til nettverket på ulike tidspunkt for å redusere kollisjonar.
+
+**Enhetsredundans** kan opprettast ved å sikre fleire ruter til kvar eining for å garantere dataoverføring til gatewayen sjølv ved feil i hovudruten.
+
+### 25.11.2 Redundans ved Nettverkstilgangspunkt
+
+Fleire tilgangspunkt gir auka sti-diversitet og dermed meir redundans i systemet. Eit tilgangspunkt fungerer som eit kommunikasjonsknutepunkt mellom ei eining og gatewayen, og gir både høgare båndbredde og alternative ruter for å sikre pålitelig kommunikasjon.
+
+- **Funksjon**: Tilgangspunktet gir tilgang til fleire kommunikasjonsstiar mot gatewayen og nettverksstyraren.
+- **Kostnad og bandbredde**: Teoretisk kan eit nettverk ha eit ubegrensa antal tilgangspunkt, men ein må balansere mellom kostnad, bandbredde og behovet for redundans.
+
+### 25.11.3 Redundans i Gateway, Nettverksstyrar og Sikkerheitsstyrar
+
+Redundans kan implementerast ved å kombinere gateway, nettverksstyrar og sikkerheitsstyrar i éin fysisk gateway-enhet og replikere denne oppsettet fleire stader i nettverket. 
+
+- **Primær og sekundær gateway**: Éin gateway fungerer som primær, medan den andre overtek ved feil. Dei to gatewayane er synkroniserte via ein redundansstyrar som held systemet oppdatert.
+
+### 25.12 Sikkerheitsnøklar i WirelessHART
+
+WirelessHART har ein nøkkelhandteringsstrategi som ikkje er fullt detaljert for både trådlause og kablede delar av nettverket. Standardiserte nøklar inkluderer:
+
+- **AES-128 kryptering** med symmetriske nøklar.
+- **Fleirnøkkelarkitektur** som støttar individuelle join-nøklar for kvar eining.
+- **Autentisering av data link PDUs** med nettverksnøkkel.
+- **Ende-til-ende autentisering** med sesjonsnøkkel.
+
+### Nøkkeltypar i WirelessHART
+1. **Join Key**: Unik per eining, må distribuerast før nettverksinitiering.
+2. **Session Key**: Brukt for ende-til-ende kommunikasjon.
+3. **Network Key**: For autentisering på data-link-nivå.
+4. **Handheld Key**: For handhaldne einingar.
+5. **Well-known Key**: For spesifikke føremål.
+
+WirelessHART-spesifikasjonen sikrar at nettverksstyraren sender nøklar via gatewayen, medan sikkerheitsstyraren genererer og lagrar nøklane.
+
+### 25.12.1 Join Key
+
+Kvar eining i WirelessHART-nettverket har ein **individuell join key** som fungerer som eit passord for å få tilgang til nettverket. 
+
+- **Distribusjon**: Sikkerheitsadministratoren distribuerer denne nøkkelen manuelt til kvar eining, ofte ved hjelp av ein handhalden eining gjennom einingas vedlikehaldsport.
+- **Isolering ved nøkkelendring**: Ved første oppsett eller endring av join key må eininga vere isolert frå nettverket.
+- **Funksjonar**: Etter at eininga har join key, kan nettverksstyraren autentisere og gi tilgang til nettverket, og skrive inn eininga si **network key** og **session key** ved vellykka autentisering.
+
+### 25.12.2 Session Key
+
+Kvar eining får **fire sesjonsnøklar** etter vellykka tilkopling eller oppstart:
+
+1. **Unicast gateway session key** mellom gateway og eininga.
+2. **Unicast network manager session key** mellom nettverksstyraren og eininga.
+3. **Broadcast gateway session key** frå gateway til alle einingar.
+4. **Broadcast network manager session key** frå nettverksstyraren til alle einingar.
+
+Einingar kommuniserer ikkje direkte med kvarandre, men via gatewayen. Eininga sender meldingar til gatewayen ved bruk av sin unicast gateway session key, og gatewayen vidareformidlar meldinga til destinasjonseininga med sin unicast gateway session key.
+
+### 25.12.3 Network Key
+
+Det finst berre éin **network key** som blir delt mellom alle einingar for å sikre datalinklaget mot angrep utanfrå.
+
+- **Autentisering**: Nettverksnøkkelen blir brukt til å rekne ut MIC som beskyttar og autentiserer DLPDU (Data Link Protocol Data Unit) mellom einingane.
+
+### 25.12.4 Handheld Key
+
+Handheld key blir distribuert av nettverksstyraren ved hjelp av join key når den blir etterspurt av ein handhalden eining.
+
+- **Peer-to-peer-forbindelse**: Brukt for vedlikehald av einingar gjennom vedlikehaldsporten, utan å involvere gatewayen.
+- **Sikrar NPDU**: Handheld key beskyttar data i NPDU (Network Protocol Data Unit) under vedlikehald.
+
+### 25.12.5 Well-known Key
+
+**Well-known key** blir brukt ved tilkopling og sikrar join-request/response-meldingar når eininga enno ikkje har fått nettverksnøkkelen.
+
+- **MIC-beregning**: Well-known key bidreg til å berekne MIC for join-prosessen og ved sending av join-annonseringar, noko som sikrar den første kommunikasjonen mellom eininga og nettverket før full autentisering.
+
+### 25.13 Nøkkelhåndtering i WirelessHART
+
+Effektiv og automatisk nøkkelhåndtering er avgjørande for sikkerheita i WirelessHART-nettverk. Nettverksstyraren fungerer som ein nøkkeldistribusjonssentral, medan sikkerheitsstyraren handterer nøkkelhåndteringa. Hovudprosessane i nøkkelhåndtering omfattar generering, lagring, distribusjon, fornying, tilbakekalling og verifisering av nøklar.
+
+- **Symmetriske nøklar**: WirelessHART bruker berre symmetrisk kryptering, noko som betyr at same nøkkel blir brukt for både kryptering og dekryptering.
+
+### 25.13.1 Nøkkelgenerering
+Sikkerheitsstyraren har ansvar for nøkkelgenerering, men WirelessHART-standarden spesifiserer ikkje eksplisitt korleis nøklane skal bli generert, berre at dei må oppfylle sikkerheitskrava for nettverket.
+
+### 25.13.2 Nøkkellagring
+Sikker lagring av nøklar er kritisk for nettverkets tryggleik, sjølv om WirelessHART ikkje gir spesifikke retningslinjer for nøkkellagring.
+
+### 25.13.3 Nøkkeldistribusjon
+Distribusjon av nøklar til einingane er nettverksstyrarens ansvar, men korleis nettverksstyraren hentar nøklar frå sikkerheitsstyraren er ikkje fullt spesifisert i standarden.
+
+- **Join Key**: Standarden gjev informasjon om korleis join key blir gitt til eininga og deretter delt med nettverksstyraren.
+
+### 25.13.4 Nøkkelfornying
+Alle nøklar bør fornyast jamleg for å hindre brute-force-angrep.
+
+- **Fornyingsmekanismar**: Nettverksnøkkelen kan endrast gjennom ein trygg broadcastsending, medan andre nøklar kan fornyast gjennom unicast-sesjonar mellom nettverksstyraren og einingane.
+- **Sikkerheitsavhengigheit**: Join key og sesjonsnøklar er avhengige av kvarandre, og svekka sikkerheit i éin nøkkel kan påverke den andre.
+
+### 25.13.5 Nøkkeltildeling og tilbakekalling
+Nøkkeltilbakekalling betyr at ein nøkkel blir deaktivert når tilhøyrande eining forlet nettverket.
+
+- **Permanent fråkopling**: Om ei eining forlet nettverket permanent, bør nettverksnøkkelen også endrast for å oppretthalde tryggleiken.
+- **Sjølvdestruksjon**: Ved tap av einingsautentisitet, som ved at ein angripar får tilgang, bør eininga sjølvdestruere eller automatisk slette nøkkelen frå nettverket.
+
+### 25.13.6 Nøkkelverifisering
+Nøkkelverifisering (key vetting) inneber autentisering av nøkkelen, men WirelessHART har ingen spesifikke kommandoar for nøkkelverifisering.
+
+### 25.14 WHART Nettverksdanning
+
+Oppretting av eit WHART-nettverk følgjer fleire steg før det er klart for industriell bruk:
+
+1. **Innstilling av nettverks-ID og passord**: Nettverksstyraren set opp nettverks-ID og passord, etterfølgt av prosessen med å gi tilgang og sikre sesjonar.
+2. **Initialoppsett**: På verkstadgolvet blir passord og nettverks-ID lagt inn i eininga. Eininga blir konfigurert etter behov, inkludert oppdateringsfrekvens.
+3. **Join-prosess**: Nettverksstyraren sender ein annonse til eininga, som svarer med ein join-forespurnad.
+4. **Autorisasjon**: Nettverksstyraren godkjenner eininga og gir nødvendige nøklar, tidsplanar og rutingsdata, slik at eininga kan begynne å publisere data.
+
+### 25.15 Sammenligning av HART og WirelessHART (WHART)
+
+| Funksjon | HART | WHART |
+|----------|------|-------|
+| Sikkerheit | Ikkje ein sikker protokoll | Ein sikker protokoll |
+| Protokollversjon | HART 6 og nedover | HART 7 og oppover |
+| OSI-modell | Løyst kopla | Sterkt kopla |
+| Transportlag og høgare | Identisk med WHART | Identisk med HART |
+| Applikasjonslag | Kommandonummer, byte-telling, og data | Kommandonummer, byte-telling, og data |
+| Nettverkslag | Spesifiserer ikkje nettverks- eller høgare lag | Brukar nettverkslag for trådløs ruting og sikkerheit |
+| Data Link-lag | Basert på token-passing | Basert på TDMA |
+| Fysisk lag | 4-20 mA analog kabling | IEEE 802.15.4-2006 |
+
+### 25.16 Integrasjon av HART og WHART
+
+HART har vore i bruk i omtrent 25 år, medan WHART er om lag eit tiår gamal. Integrasjon av desse teknologiane er viktig sidan WHART er bakoverkompatibel med HART. Dette betyr at eksisterande HART-nettverk kan utvidast eller oppgraderast med WHART-komponentar.
+
+**Integrasjonseigenskapar**:
+- **Bakoverkompatibilitet**: WHART-einingar er kompatible med eksisterande HART-einingar, noko som gjer overgang lettare.
+- **Gateway for protokollkonvertering**: Integrasjonen skjer gjennom ein gateway som omformar protokollane for begge teknologiane, slik at WHART og HART kan operere i same system.
