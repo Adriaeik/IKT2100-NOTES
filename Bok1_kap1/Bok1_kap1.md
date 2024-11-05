@@ -382,7 +382,7 @@ Etter å ha undersøkt kanten av Internett, skal vi no fordjupe oss i **nettverk
   - Kjelda sender tre pakkar på L bit kvar til destinasjonen via ein router.
   - Total forsinkelse for éin pakke er 2L/R (tid for å sende til router + tid for router å sende til destinasjon).
 - Generelt for N lenker:
-  - **End-to-end delay**: \( d_{\text{end-to-end}} = N \times \frac{L}{R} \)
+  - **End-to-end delay**: $d_{\text{end-to-end}} = N \times \frac{L}{R}$
 
 **Queuing Delays and Packet Loss**
 
@@ -469,40 +469,40 @@ Internett som infrastruktur introduserer nødvendigvis forsinkelse (delay), kan 
 
 Ein pakke som reiser frå kjelde til destinasjon opplever fleire typar forsinkelsar ved kvart nodalpunkt (host eller router):
 
-- **Prosesseringsforsinkelse (\( d_{\text{proc}} \))**: Tida det tek for ein router å undersøke pakkens header og bestemme kor den skal sendast vidare. Vanlegvis i mikrosekundområdet.
+- **Prosesseringsforsinkelse ($d_{\text{proc}}$)**: Tida det tek for ein router å undersøke pakkens header og bestemme kor den skal sendast vidare. Vanlegvis i mikrosekundområdet.
 
-- **Køforsinkelse (\( d_{\text{queue}} \))**: Tida pakka ventar i køen før den kan bli overført på utgåande lenke. Varierer avhengig av nettverkstrafikk og kan range frå mikrosekund til millisekund.
+- **Køforsinkelse ($d_{\text{queue}}$)**: Tida pakka ventar i køen før den kan bli overført på utgåande lenke. Varierer avhengig av nettverkstrafikk og kan range frå mikrosekund til millisekund.
 
-- **Transmisjonsforsinkelse (\( d_{\text{trans}} \))**: Tida det tek å skyve alle pakkebitane ut på lenka. Gitt ved formelen:
-  \[
+- **Transmisjonsforsinkelse ($d_{\text{trans}}$)**: Tida det tek å skyve alle pakkebitane ut på lenka. Gitt ved formelen:
+  $$
   d_{\text{trans}} = \frac{L}{R}
-  \]
-  der \( L \) er pakkelengda i bit, og \( R \) er overføringsraten i bits per sekund.
+  $$
+  der $L$ er pakkelengda i bit, og $R$ er overføringsraten i bits per sekund.
 
-- **Propageringsforsinkelse (\( d_{\text{prop}} \))**: Tida det tek for ein bit å reise frå avsendar til mottakar over lenka. Gitt ved:
-  \[
+- **Propageringsforsinkelse ($d_{\text{prop}}$)**: Tida det tek for ein bit å reise frå avsendar til mottakar over lenka. Gitt ved:
+  $$
   d_{\text{prop}} = \frac{d}{s}
-  \]
-  der \( d \) er avstanden mellom nodane, og \( s \) er propagasjonshastigheita (nær lysets hastigheit, \( 2 \times 10^8 \) til \( 3 \times 10^8 \) m/s).
+  $$
+  der $d$ er avstanden mellom nodane, og $s$ er propagasjonshastigheita (nær lysets hastigheit, $2 \times 10^8$ til $3 \times 10^8$ m/s).
 
 Den totale nodale forsinkelsen er summen av alle desse komponentane:
-\[
+$$
 d_{\text{nodal}} = d_{\text{proc}} + d_{\text{queue}} + d_{\text{trans}} + d_{\text{prop}}
-\]
+$$
 
 ---
 
 **1.4.2 Køforsinkelse og Pakketap**
 
-**Trafikkintensitet (\( La/R \))** er ein viktig parameter for å estimere køforsinkelse, der:
+**Trafikkintensitet ($La/R$)** er ein viktig parameter for å estimere køforsinkelse, der:
 
-- \( L \) er gjennomsnittleg pakkelengde (bit).
-- \( a \) er gjennomsnittleg ankomstrate av pakkar (pakkar per sekund).
-- \( R \) er overføringsraten (bits per sekund).
+- $L$ er gjennomsnittleg pakkelengde (bit).
+- $a$ er gjennomsnittleg ankomstrate av pakkar (pakkar per sekund).
+- $R$ er overføringsraten (bits per sekund).
 
 **Køforsinkelse aukar dramatisk** når trafikkintensiteten nærmar seg 1:
-- Når \( La/R \geq 1 \), overgår ankomstraten overføringskapasiteten, noko som fører til at køen veks uavgrensa og køforsinkelsen går mot uendeleg.
-- For \( La/R < 1 \), kan køforsinkelsen vere minimal dersom pakkar kjem sporadisk, men kan bli betydelig dersom pakkar kjem i burst.
+- Når $La/R \geq 1$, overgår ankomstraten overføringskapasiteten, noko som fører til at køen veks uavgrensa og køforsinkelsen går mot uendeleg.
+- For $La/R < 1$, kan køforsinkelsen vere minimal dersom pakkar kjem sporadisk, men kan bli betydelig dersom pakkar kjem i burst.
 
 **Pakketap** oppstår når køen har begrensa kapasitet:
 - Når køen er full og nye pakkar kjem til, må pakkar droppast.
@@ -512,56 +512,56 @@ d_{\text{nodal}} = d_{\text{proc}} + d_{\text{queue}} + d_{\text{trans}} + d_{\t
 
 **1.4.3 Ende-til-Ende Forsinkelse**
 
-For ein sti med \( N-1 \) mellomliggande routerar (og dermed \( N \) lenker), er den totale ende-til-ende-forsinkelsen (med neglisjerbar køforsinkelse) gitt ved:
-\[
+For ein sti med $N-1$ mellomliggande routerar (og dermed $N$ lenker), er den totale ende-til-ende-forsinkelsen (med neglisjerbar køforsinkelse) gitt ved:
+$$
 d_{\text{end-end}} = N \times (d_{\text{proc}} + d_{\text{trans}} + d_{\text{prop}})
-\]
-der \( d_{\text{trans}} \) og \( d_{\text{prop}} \) er transmisjons- og propageringsforsinkelsen på kvar lenke.
+$$
+der $d_{\text{trans}}$ og $d_{\text{prop}}$ er transmisjons- og propageringsforsinkelsen på kvar lenke.
 
 ---
 
 **1.4.4 Gjennomstrøyming i Datanettverk**
 
 **Instantan gjennomstrøyming** refererer til overføringsraten (bps) på eit gitt tidspunkt, medan **gjennomsnittleg gjennomstrøyming** er total overført datamengde delt på total overføringstid:
-\[
+$$
 \text{Gjennomsnittleg gjennomstrøyming} = \frac{F}{T}
-\]
+$$
 der:
-- \( F \) er filstorleiken (bit).
-- \( T \) er total overføringstid (sekund).
+- $F$ er filstorleiken (bit).
+- $T$ er total overføringstid (sekund).
 
-**Flaskehalsen** i eit nettverk er den lenka med lågast overføringsrate (\( R_{\text{min}} \)):
+**Flaskehalsen** i eit nettverk er den lenka med lågast overføringsrate ($R_{\text{min}}$):
 - Gjennomstrøyminga er avgrensa av flaskehalsen:
-  \[
+  $$
   \text{Gjennomstrøyming} = \min\{R_1, R_2, \dots, R_N\}
-  \]
-  der \( R_i \) er overføringsraten på lenke \( i \).
+  $$
+  der $R_i$ er overføringsraten på lenke $i$.
 
 **Eksempel 1:**
 
 - Eit nettverk med to lenker frå server til klient:
-  - Server til router: \( R_s \) bps.
-  - Router til klient: \( R_c \) bps.
+  - Server til router: $R_s$ bps.
+  - Router til klient: $R_c$ bps.
 - Gjennomstrøyminga er:
-  \[
+  $$
   \text{Gjennomstrøyming} = \min\{R_s, R_c\}
-  \]
+  $$
 
 **Eksempel 2:**
 
-- Eit nettverk med \( N \) lenker og overføringsrater \( R_1, R_2, \dots, R_N \).
+- Eit nettverk med $N$ lenker og overføringsrater $R_1, R_2, \dots, R_N$.
 - Gjennomstrøyminga er avgrensa av den minste overføringsraten:
-  \[
+  $$
   \text{Gjennomstrøyming} = \min\{R_1, R_2, \dots, R_N\}
-  \]
+  $$
 
 **Eksempel 3:**
 
-- Med fleire samtidige overføringar som deler ei felles lenke med kapasitet \( R \) bps.
-- Om \( M \) overføringar deler likt på lenka:
-  \[
+- Med fleire samtidige overføringar som deler ei felles lenke med kapasitet $R$ bps.
+- Om $M$ overføringar deler likt på lenka:
+  $$
   \text{Gjennomstrøyming per overføring} = \frac{R}{M}
-  \]
+  $$
 
 ---
 
