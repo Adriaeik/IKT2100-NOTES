@@ -474,9 +474,7 @@ Ein pakke som reiser frå kjelde til destinasjon opplever fleire typar forsinkel
 - **Køforsinkelse ($d_{\text{queue}}$)**: Tida pakka ventar i køen før den kan bli overført på utgåande lenke. Varierer avhengig av nettverkstrafikk og kan range frå mikrosekund til millisekund.
 
 - **Transmisjonsforsinkelse ($d_{\text{trans}}$)**: Tida det tek å skyve alle pakkebitane ut på lenka. Gitt ved formelen:
-  $$
-  d_{\text{trans}} = \frac{L}{R}
-  $$
+  $$  d_{\text{trans}} = \frac{L}{R} $$
   der $L$ er pakkelengda i bit, og $R$ er overføringsraten i bits per sekund.
 
 - **Propageringsforsinkelse ($d_{\text{prop}}$)**: Tida det tek for ein bit å reise frå avsendar til mottakar over lenka. Gitt ved:
@@ -568,3 +566,235 @@ der:
 **Oppsummering**
 
 For å kunne designe effektive nettverk og applikasjonar, er det avgjerande å forstå dei matematiske aspekta ved forsinkelse og gjennomstrøyming i pakke-svitsja nettverk. Ved å modellere og analysere desse faktorane kan ein identifisere flaskehalsar, forutseie køforsinkelsar og optimalisere nettverkets ytelse.
+
+**1.5 Protokollag og Tenestemodellar**
+
+Internett er ein svært kompleks struktur med mange komponentar: applikasjonar, protokollar, ulike endesystem, pakkesvitsjarar og forskjellige typar link-level media. For å organisere denne kompleksiteten, nyttar vi ei lagdelt arkitektur.
+
+---
+
+**1.5.1 Lagdelt Arkitektur**
+
+Ein menneskeleg analogi kan hjelpe oss å forstå dette konseptet. Tenk på flysystemet: Det involverer billettkontor, bagasjesjekk, gatepersonale, pilotar, fly, flygeleiarar og eit globalt rutesystem. For å beskrive dette komplekse systemet, kan vi dele det opp i lag basert på dei ulike handlingane som skjer:
+
+- **Billettlag**: Kjøp og klage på billettar.
+- **Bagasjelag**: Innsjekking og henting av bagasje.
+- **Gatelag**: Ombordstiging og avstiging ved gaten.
+- **Takeoff/Landing-lag**: Avgang og landing på rullebanen.
+- **Flyrute-lag**: Navigering av flyet mellom flyplassar.
+
+Kvart lag tilbyr tenester til laget over ved å utføre visse handlingar og bruke tenestene frå laget under. Denne modulariteten gjer det enklare å oppdatere eller endre implementeringa av eit lag utan å påverke resten av systemet, så lenge tenesta som vert levert er den same.
+
+---
+
+**Protokollagdeling**
+
+I nettverksprotokollar organiserer vi protokollar og tilhøyrande maskinvare og programvare i lag. Kvart lag har sine protokollar og tilbyr tenester til laget over gjennom ein **service model**. Eit lag tilbyr tenester ved å:
+
+1. Utføre spesifikke handlingar innanfor laget.
+2. Bruke tenestene frå laget direkte under.
+
+Eit eksempel er at lag \( n \) kan tilby pålitelig levering av meldingar ved å bruke ein upålitelig teneste frå lag \( n - 1 \), og legge til funksjonalitet for å oppdage og sende på nytt tapte meldingar.
+
+**Fordelar og Ulemper med Lagdeling**
+
+- **Fordelar**:
+  - Gjev ei strukturert tilnærming for å diskutere systemkomponentar.
+  - Modularitet som gjer det enklare å oppdatere komponentar utan å påverke andre lag.
+- **Ulemper**:
+  - Kan føre til duplisering av funksjonalitet på fleire lag (t.d. feilhåndtering).
+  - Kan oppstå behov for informasjon på eitt lag som berre er tilgjengeleg på eit anna lag, noko som bryt med prinsippet om separasjon av lag.
+
+**Internet Protokollstakken**
+
+Internett-protokollstakken består av fem lag:
+
+1. **Applikasjonslaget**: Her finst nettverksapplikasjonar og applikasjonsprotokollar som HTTP, SMTP og FTP. Applikasjonslaget er distribuert over fleire endesystem der applikasjonar utvekslar **meldingar**.
+
+2. **Transportlaget**: Transporterer applikasjonsmeldingar mellom applikasjonsendepunkt. Dei to hovudprotokollane er **TCP** og **UDP**.
+   - **TCP**: Tilbyr pålitelig, forbindingsorientert teneste med flytkontroll og kongestionkontroll.
+   - **UDP**: Tilbyr ein enkel, upålitelig, forbindingslaus teneste utan flytkontroll eller kongestionkontroll.
+   - Transportlagsenhetar kallast **segment**.
+
+3. **Nettverkslaget**: Ansvarleg for å flytte **datagram** frå ein host til ein annan. Hovudprotokollen er **IP**, som definerer datagramformat og ruting mellom kildar og destinasjonar. Nettverkslaget inkluderer også rutingprotokollar.
+
+4. **Lenkelaget**: Flyttar **rammer** frå ein node til den neste på ruta. Tenestene avheng av spesifikke lenkelagsprotokollar som Ethernet, WiFi og PPP. Eit datagram kan bli handsama av ulike lenkelagsprotokollar på ulike lenker langs ruta.
+
+5. **Fysisk lag**: Flyttar individuelle bitar i ein ramme frå ein node til den neste over det fysiske mediet (t.d. kopartråd, fiberoptikk). Protokollane er avhengige av det fysiske mediet.
+
+---
+
+**1.5.2 Innkapsling**
+
+**Innkapsling** er prosessen der kvart lag legg til sin eigen headerinformasjon til dataene frå laget over:
+
+- **Applikasjonslaget** sender ei melding \( M \) til transportlaget.
+- **Transportlaget** legg til sin header \( H_t \), og dannar eit **segment** (\( H_t + M \)).
+- **Nettverkslaget** legg til sin header \( H_n \), og dannar eit **datagram** (\( H_n + H_t + M \)).
+- **Lenkelaget** legg til sin header \( H_l \), og dannar ei **ramme** (\( H_l + H_n + H_t + M \)).
+
+På mottakarsida blir prosessen reversert (de-innkapsling), der kvar header blir fjerna i omvendt rekkefølge.
+
+**Analogien med eit brev**:
+
+- **Melding**: Sjå på ei intern melding (f.eks. eit notat) som applikasjonsdata.
+- **Segment**: Notatet blir lagt i ein intern konvolutt med mottakarens namn (transportlaget).
+- **Datagram**: Den interne konvolutten blir lagt i ein ekstern konvolutt med adresse (nettverkslaget).
+- **Ramme**: Den eksterne konvolutten blir sendt gjennom postsystemet (lenkelaget og fysisk lag).
+
+---
+
+**1.6 Nettverk Under Angrep**
+
+Internett er kritisk for mange institusjonar og enkeltpersonar, men står overfor mange sikkerheitsutfordringar der "bad guys" prøver å skade systema våre.
+
+**Truslar og Angrep**
+
+1. **Malware (Skadeleg Programvare)**:
+   - **Virus og Ormar**: Kan infisere einheter via Internett og utføre skadelege handlingar som å slette filer eller stjele privat informasjon.
+   - **Botnet**: Infiserte maskinar kan bli del av eit nettverk kontrollert av angriparar for å utføre ytterlegare angrep som spam eller DDoS.
+
+2. **Denial-of-Service (DoS) Angrep**:
+   - **Vulnerability Attack**: Utnyttar sårbarheiter i applikasjonar eller operativsystem for å krasje tenester.
+   - **Bandwidth Flooding**: Overveldar målserveren med ein flaum av pakkar, slik at legitim trafikk ikkje når fram.
+   - **Connection Flooding**: Opprettar mange falske TCP-forbindelsar for å bruke opp ressursane til serveren.
+
+3. **Packet Sniffing**:
+   - **Sniffing**: Ein passiv mottakar avlyttar trafikk for å stjele sensitiv informasjon.
+   - **Sårbarheiter**: Spesielt i trådlause nettverk og delte medium som Ethernet.
+
+4. **IP Spoofing og Maskering**:
+   - **IP Spoofing**: Angriparen sender pakkar med falsk kjeldeadresse.
+   - **Maskering**: Angriparen utgir seg for å vere ein annan brukar eller system.
+
+---
+
+**Behov for Sikkerheitstiltak**
+
+- **Kryptografi**: Beskytte data gjennom kryptering for å hindre uautorisert tilgang.
+- **Endepunktautentisering**: Sikre at kommunikasjon skjer mellom legitime partar.
+- **Forsvar mot DoS-angrep**: Utvikle metodar for å oppdage og avverge ulike typar DoS-angrep.
+- **Overvaking og Deteksjon**: Aktivt overvake nettverk for mistenkeleg aktivitet.
+
+**Internettets Oprinnelege Design og Sikkerheit**
+
+- Internett vart opprinneleg designa for eit miljø med gjensidig tillit, utan fokus på sikkerheit.
+- I dagens miljø med mange utrustlege brukarar er det nødvendig å innføre sikkerheitsmekanismer.
+- Kommunikasjon mellom brukarar som ikkje stolar på kvarandre er vanleg, og nettverket må kunne handtere dette på ein trygg måte.
+
+---
+
+**Avslutning**
+
+Sikkerheit i nettverk er ein kritisk del av moderne datanettverk. Som nettverksingeniørar og -brukarar må vi forstå truslane og implementere tiltak for å beskytte systema våre mot ulike angrep.
+
+**1.7 Historien til Datanettverk og Internett**
+
+Denne seksjonen gir ein oversikt over utviklinga av datanettverk og Internett frå tidleg på 1960-talet fram til i dag, delt inn i fleire viktige periodar:
+
+---
+
+**1.7.1 Utviklinga av Pakke-svitsjing: 1961–1972**
+
+- **Bakgrunn**: På 1960-talet dominerte telefonsystemet, som brukte krets-svitsjing, den globale kommunikasjonen. Men behovet for å kopla saman datamaskiner og håndtera "burst"-trafikk førte til nye idear.
+
+- **Leonard Kleinrock (MIT)**: Publiserte det første arbeidet om pakke-svitsjing i 1961, og viste gjennom køteori effektiviteten av denne metoden for ujamn trafikk.
+
+- **Paul Baran (RAND Institute)** og **Donald Davies (NPL, England)**: Arbeidde uavhengig med konseptet pakke-svitsjing for sikre kommunikasjonssystem.
+
+- **ARPAnet (1969)**: Det første pakke-svitsja nettverket, initiert av ARPA (seinare DARPA), kopla saman fire universitet: UCLA, SRI, UC Santa Barbara og University of Utah.
+
+---
+
+**1.7.2 Proprietære Nettverk og Internettverking: 1972–1980**
+
+- **Internettverking**: Behovet for å kopla saman ulike nettverk førte til utviklinga av konseptet "internettverking".
+
+- **Vinton Cerf og Robert Kahn**: Utvikla grunnleggjande prinsipp for internettverking og publiserte i 1974 arbeidet som leidde til TCP/IP-protokollen.
+
+- **Separasjon av TCP og IP**: For å støtte ulike typar applikasjonar (både pålitelig og upålitelig overføring) blei TCP delt i TCP (Transport Control Protocol) og IP (Internet Protocol).
+
+- **Andre nettverk**: Parallelt med ARPAnet oppstod andre nettverk som ALOHANet (Hawaii), Telenet, Cyclades (Frankrike), og IBM's SNA.
+
+---
+
+**1.7.3 Ein Proliferasjon av Nettverk: 1980–1990**
+
+- **Vekst av ARPAnet**: Frå rundt 200 til over 100 000 tilkopla vertsmaskinar ved slutten av 1980-talet.
+
+- **Universitetsnettverk**: Nettverk som BITNET, CSNET og NSFNET vart oppretta for å kople saman akademiske institusjonar.
+
+- **Standardisering av TCP/IP (1983)**: Alle vertar på ARPAnet gjekk over til å bruke TCP/IP-protokollen.
+
+- **Utvikling av DNS**: Domenenamnsystemet (DNS) blei introdusert for å mappe menneske-lesbare namn til IP-adresser.
+
+- **Minitel (Frankrike)**: Eit tidleg eksempel på eit nasjonalt datanettverk som tilbød elektroniske tenester til hushaldningar.
+
+---
+
+**1.7.4 Internett-eksplosjonen: 1990-talet**
+
+- **Kommersialisering av Internett**: NSFNET opna for kommersiell bruk, og kommersielle ISPar tok over infrastrukturen.
+
+- **World Wide Web (WWW)**: Oppfunne av Tim Berners-Lee (1989–1991), med utvikling av HTML, HTTP, webservere og nettlesarar.
+
+- **Nettlesarkrigen**: Konkurranse mellom Netscape og Microsoft bidrog til rask utvikling av nettlesarteknologi.
+
+- **Killer-applikasjonar**:
+  - **E-post**: Utbreiing av elektronisk postkommunikasjon.
+  - **Web**: Eksplosiv vekst av websider og nettbaserte tenester.
+  - **Instant Messaging**: Sanntidskommunikasjon mellom brukarar.
+  - **Peer-to-Peer Fildeling**: Tjenester som Napster muliggjorde deling av musikkfiler.
+
+---
+
+**1.7.5 Det Nye Tusenåret**
+
+- **Breidbånd og Høg-hastigheits Internett**: Utbreiing av kabel, DSL, fiber og trådlause teknologiar (WiFi, 4G, 5G) har auka tilgangen til Internett.
+
+- **Smarttelefonar og Mobil Internett**: Konstant og trådløs tilgang har ført til nye applikasjonar og tenester.
+
+- **Sosiale Nettverk**: Plattformar som Facebook, Twitter og Instagram har endra måten folk kommuniserer og deler informasjon på.
+
+- **Innhaldsleverandørnettverk**: Selskap som Google og Microsoft har bygd eigne globale nettverk for å betra tenesteyting og redusere kostnader.
+
+- **Skytjenester**: Fleire organisasjonar flyttar applikasjonar og data til skyen, med tilbydarar som Amazon Web Services, Microsoft Azure og Alibaba Cloud.
+
+---
+
+**1.8 Oppsummering**
+
+I dette kapittelet har vi fått ein omfattande introduksjon til datanettverk og Internett:
+
+- **Nettverkskomponentar**: Vi har sett på endesystem, applikasjonar, protokollar, pakkesvitsjarar og ulike fysiske medium.
+
+- **Nettverksarkitektur**: Forstått forskjellen mellom tilgangsnettverk (tilkoplar brukarar til nettverket) og nettverkskjernen (ruting og overføring av data).
+
+- **Pakkesvitsjing vs. Krets-svitsjing**: Utforska fordelar og ulemper ved dei to hovudmetodane for dataoverføring i nettverk.
+
+- **Forsinkelse, Tap og Gjennomstrøyming**: Innført grunnleggjande konsept og matematiske modellar for å analysere ytelsen til nettverk.
+
+- **Protokollagdeling**: Lært om den fem-laga Internett-protokollstakken (applikasjon, transport, nettverk, lenke og fysisk lag) og korleis desse samarbeider.
+
+- **Sikkerheit**: Diskutert truslar som malware, DoS-angrep og pakkesniffing, og viktigheten av å implementere sikkerheitsmekanismer.
+
+- **Historisk Perspektiv**: Følgt utviklinga av datanettverk frå dei tidlege konsepta av pakke-svitsjing til dagens komplekse og globale Internett.
+
+---
+
+**Vegen Vidare**
+
+Boka følgjer ein top-down tilnærming, som betyr at vi startar med dei øvste laga i protokollstakken og arbeider oss nedover. Dette gir oss ei forståing av applikasjonane og tenestane før vi dykker ned i korleis nettverket er bygd for å støtte desse.
+
+**Kapitteloversikt:**
+
+1. **Datanettverk og Internett**: Innleiande konsept og oversikt (dette kapittelet).
+2. **Applikasjonslaget**: Studerer protokollar og tenester på applikasjonsnivå.
+3. **Transportlaget**: Utforskar mekanismane for dataoverføring mellom applikasjonar.
+4. **Nettverkslaget: Dataplanet**: Ser på korleis pakkar blir rutet gjennom nettverket.
+5. **Nettverkslaget: Kontrollplanet**: Dybde i rutingprotokollar og kontrollmekanismar.
+6. **Lenkelaget og LAN**: Undersøker lokale nettverk og lenkelagsprotokollar.
+7. **Trådlause og Mobile Nettverk**: Fokus på trådlause teknologiar og mobilitet.
+8. **Sikkerheit i Datanettverk**: Dykker ned i sikkerheitsprotokollar og mekanismar.
+
+Gjennom denne strukturen vil vi gradvis bygge opp ein djup forståing av korleis moderne datanettverk fungerer, frå dei høgaste applikasjonslaga til dei lågaste fysiske laga, og korleis dei ulike komponentane samarbeider for å levere dei tenestane vi tek for gitt i dag.
