@@ -44,5 +44,5 @@ finally:
 
 ## 2F928UZ9T6R264VC5QLWE3E8, fra TWILIO
 # sender_email = 'adrianpython28@yahoo.com'
-# sender_password = 'Rbk.lfc123'
+# sender_password = '********'
 # receiver_email = 'eikeland.adrian.valaker@gmail.com'
