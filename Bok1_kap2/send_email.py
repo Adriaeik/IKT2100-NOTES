@@ -7,7 +7,7 @@ import ssl
 smtp_server = 'smtp.mail.yahoo.com'
 smtp_port = 465  # Bruk 465 for SSL
 sender_email = 'adrianpython28@yahoo.com'
-sender_password = 'Rbk.lfc123'
+sender_password = '***********'
 receiver_email = 'eikeland.adrian.valaker@gmail.com'
 
 # Opprett ein e-postmelding
