@@ -43,3 +43,5 @@ while True:
     # Motta data frå klienten
     data, addr = server_socket.recvfrom(1024)  # 1024 byte buffer
     print(f"Motta melding frå {addr}: {data.decode()}")
+    server_socket.sendto('Hei'.encode(),addr)
+    

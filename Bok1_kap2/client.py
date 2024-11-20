@@ -32,3 +32,6 @@ melding = "Hei frå UDP-klienten!"
 client_socket.sendto(melding.encode(), server_address)
 
 print("Melding sendt til serveren!")
+while(1):
+    data = client_socket.recvfrom(1024)
+    print(data)
