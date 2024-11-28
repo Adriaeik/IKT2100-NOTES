@@ -5,3 +5,8 @@
 
 **Open PLC eth1**
 - 192.168.1.60/24
+
+
+## TO DO
+- IPv4 vs. IPv6
+- 

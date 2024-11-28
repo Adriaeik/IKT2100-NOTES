@@ -91,7 +91,7 @@ Dette notatet hjelper deg med å forstå dei viktigaste felta i IPv4-headeren og
 
 ### Notat om subnetting og maksimalt antal grensesnitt:
 
-- For eit nettverk med ein **/24 subnettmaske** som i **223.1.2/24**, har du totalt 256 IP-adresser. Dette kjem av at det er \(2^{(32-24)} = 2^8 = 256\) adresser tilgjengelige i dette subnettet.
+- For eit nettverk med ein **/24 subnettmaske** som i **223.1.2/24**, har du totalt 256 IP-adresser. Dette kjem av at det er $2^{(32-24)} = 2^8 = 256$ adresser tilgjengelige i dette subnettet.
   
 - **Maksimalt antal grensesnitt** i subnettet vil vere 256, men to av desse IP-adressene er reserverte: éi for nettverksadressa og éi for broadcast-adressa. Dermed har du 254 brukbare IP-adresser for grensesnitt (enheter) i subnettet.
 
@@ -99,7 +99,7 @@ Dette notatet hjelper deg med å forstå dei viktigaste felta i IPv4-headeren og
 
 ### Notat om subnetting med /29:
 
-- For eit subnett med ein **/29 subnettmaske** (som i **223.1.3/29**), har du totalt \(2^{(32-29)} = 2^3 = 8\) adresser tilgjengelege i subnettet.
+- For eit subnett med ein **/29 subnettmaske** (som i **223.1.3/29**), har du totalt $2^{(32-29)} = 2^3 = 8$ adresser tilgjengelege i subnettet.
   
 - Av desse 8 adressene er to reserverte: éi for nettverksadressa og éi for broadcast-adressa. Dermed har du 6 brukbare IP-adresser for grensesnitt (enheter) i subnettet.
 
